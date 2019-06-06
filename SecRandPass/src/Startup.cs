@@ -1,46 +1,40 @@
 ﻿namespace SecurePasswordGenerator
 {
+    using SecurePasswordGenerator.src.Messages;
+    using SecurePasswordGenerator.src.Models;
     using System;
-    using System.Text;
 
     public class Startup
     {
-        private const int minValue = 5;
-        private const int maxValue = 1024;
-        private const string PasswordLengthMessage = "Enter password length: ";
-        private const string PasswordReceiverMessage = "Your password is: ";
-        private const string PasswordShouldBeLongerMessage = "Password should be more than {0} symbols.";
-        private const string PasswordShouldBeLessMessage = "Password should be less than {0} symbols.";
-
         public static void Main(string[] args)
         {
-            Func<string, int> intParser = x => int.Parse(x);
+            Messenger messages = new Messenger();
+            Func<string, int> stringParser = x => int.Parse(x);
 
             Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.Write(string.Format(PasswordLengthMessage));
+            Console.Write(messages.InputPasswordLengthMessage);
 
             while (true)
             {
                 try
                 {
-                    int length = intParser(Console.ReadLine());
+                    int length = stringParser(Console.ReadLine());
 
-                    if (length <= minValue)
+                    if (length <= messages.MinValue)
                     {
-                        throw new ArgumentException(string.Format(PasswordShouldBeLongerMessage, minValue));
+                        throw new ArgumentException(messages.MinimumSymbolsMessage);
                     }
-
-                    else if (length > maxValue)
+                    else if (length > messages.MaxValue)
                     {
-                        throw new ArgumentException(string.Format(PasswordShouldBeLessMessage, maxValue));
+                        throw new ArgumentException(messages.MaximumSymbolsMessage);
                     }
 
                     RandomPassword password = new RandomPassword();
                     password.GenerateRandomPassword(length);
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(string.Format(PasswordReceiverMessage));
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.Write(messages.OutputPasswordMessage);
 
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(password);

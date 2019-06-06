@@ -1,4 +1,4 @@
-﻿namespace SecurePasswordGenerator
+﻿namespace SecurePasswordGenerator.src.Contracts
 {
     public interface IRandomPassword
     {

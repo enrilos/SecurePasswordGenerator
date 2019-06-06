@@ -1,5 +1,6 @@
-﻿namespace SecurePasswordGenerator
+﻿namespace SecurePasswordGenerator.src.Models
 {
+    using SecurePasswordGenerator.src.Contracts;
     using System;
     using System.Text;
 
