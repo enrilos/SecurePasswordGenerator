@@ -1,60 +1,57 @@
 ﻿namespace SecurePasswordGenerator
 {
     using System;
+    using System.Text;
 
     public class Startup
     {
-        private const int minValue = 7;
+        private const int minValue = 5;
         private const int maxValue = 1024;
-        private const string SecRandPassVersion = "Secure Password Generator v1.0";
-        private const string PasswordLengthMessage = "How long should the password be? : ";
-        private const string ErrorMessage = "Password length accepts only numbers in range {0} and {1}.";
+        private const string PasswordLengthMessage = "Enter password length: ";
+        private const string PasswordReceiverMessage = "Your password is: ";
+        private const string PasswordShouldBeLongerMessage = "Password should be more than {0} symbols.";
+        private const string PasswordShouldBeLessMessage = "Password should be less than {0} symbols.";
 
-        public static void Main()
+        public static void Main(string[] args)
         {
-            int passwordStrength = GetUsersPasswordStrength();
-
-            RandomPassword randomPassword = new RandomPassword(passwordStrength);
-
-            PrintGeneratedPassword(randomPassword);
-        }
-
-        private static void PrintGeneratedPassword(RandomPassword randomPassword)
-        {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-
-            Console.WriteLine(randomPassword);
-
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
-
-        private static int GetUsersPasswordStrength()
-        {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(string.Format(SecRandPassVersion));
+            Func<string, int> intParser = x => int.Parse(x);
 
             Console.ForegroundColor = ConsoleColor.Red;
+
             Console.Write(string.Format(PasswordLengthMessage));
 
             while (true)
             {
                 try
                 {
-                    int passwordStrength = int.Parse(Console.ReadLine());
-                    while (passwordStrength < minValue || passwordStrength > maxValue)
+                    int length = intParser(Console.ReadLine());
+
+                    if (length <= minValue)
                     {
-                        Console.WriteLine(string.Format(ErrorMessage, minValue, maxValue));
-                        passwordStrength = int.Parse(Console.ReadLine());
+                        throw new ArgumentException(string.Format(PasswordShouldBeLongerMessage, minValue));
                     }
 
-                    return passwordStrength;
+                    else if (length > maxValue)
+                    {
+                        throw new ArgumentException(string.Format(PasswordShouldBeLessMessage, maxValue));
+                    }
+
+                    RandomPassword password = new RandomPassword();
+                    password.GenerateRandomPassword(length);
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write(string.Format(PasswordReceiverMessage));
+
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(password);
+
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    return;
                 }
-                catch (Exception)
+
+                catch (Exception ex)
                 {
-                    //if (ex.GetType().Name == nameof(OverflowException))
-                    //{
-                    //}
-                    Console.WriteLine(string.Format(ErrorMessage, minValue, maxValue));
+                    Console.WriteLine(ex.Message);
                 }
             }
         }

@@ -7,9 +7,8 @@
     {
         private string generatedPassword;
 
-        public RandomPassword(int passwordStrength)
+        public RandomPassword()
         {
-            this.GenerateRandomPassword(passwordStrength);
         }
 
         public void GenerateRandomPassword(int passwordStrength)
