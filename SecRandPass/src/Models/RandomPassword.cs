@@ -1,17 +1,13 @@
 ﻿namespace SecurePasswordGenerator.src.Models
 {
-    using SecurePasswordGenerator.src.Contracts;
+    using SecurePasswordGenerator.src.Models.Contracts;
     using System;
     using System.Text;
 
     public class RandomPassword : IRandomPassword
     {
         private string generatedPassword;
-
-        public RandomPassword()
-        {
-        }
-
+        
         public void GenerateRandomPassword(int passwordStrength)
         {
             StringBuilder password = new StringBuilder();
