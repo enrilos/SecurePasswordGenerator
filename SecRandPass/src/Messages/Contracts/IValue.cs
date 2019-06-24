@@ -1,6 +1,6 @@
 ﻿namespace SecurePasswordGenerator.src.Messages.Contracts
 {
-    public interface IValues
+    public interface IValue
     {
         int MinValue { get; }
 
