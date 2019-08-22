@@ -2,7 +2,7 @@
 {
     using SecurePasswordGenerator.src.Messages.Contracts;
 
-    public class Messenger : IInputOutput, ILength, IValue
+    public class PasswordMessenger : IInputOutput, ILength, IValue
     {
         public int MinValue { get; } = 5;
 
